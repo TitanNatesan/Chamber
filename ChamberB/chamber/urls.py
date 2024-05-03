@@ -17,6 +17,7 @@ urlpatterns = [
     path('formadmin/', ApproveApplicaton, name='formadmin_view'),
     path("checkAccess/",check_token,name="check_token"),
     path('application/<int:id>/', singleApplication, name='singleApplication'),
+    path('payment/', views.payment, name='payment'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

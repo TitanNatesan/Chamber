@@ -6,8 +6,7 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import BASE_URL from "./Appconfig";
-
+import { useBaseUrl } from "../context";
 const MembershipForm2 = () => {
   const navigate = useNavigate();
   const [iande, setiande] = useState("");
@@ -116,9 +115,11 @@ const MembershipForm2 = () => {
 
   console.log(accessToken);
 
+  const { baseUrl } = useBaseUrl();
+
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/api/form2/`, formData, {
+      const response = await axios.post(`${baseUrl}api/form2/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Token ${accessToken}`,
@@ -127,7 +128,7 @@ const MembershipForm2 = () => {
 
       if (response.data["Form2"] === "Success") {
         console.log(response.data["Form2"]);
-        navigate("/letter");
+        navigate("/user");
       }
     } catch (error) {
       console.error(error);

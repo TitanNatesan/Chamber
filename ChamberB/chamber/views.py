@@ -141,6 +141,7 @@ def get_user_information(request):
                 'regoffadd': form1_instance.regoffadd,
                 'acoffice': form1_instance.acoffice,
                 'acwork': form1_instance.acwork,
+                'form_status': form1_instance.form_status,
             }
         except Form1Model.DoesNotExist:
             user_data['form1_data'] = None
@@ -288,3 +289,14 @@ def singleApplication(request,id):
             'message': 'Success'
         }
         return Response(cont) 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def payment(request):
+    user = request.user
+    form = Form1Model.objects.get(user=user)
+    if request.method == 'POST':
+        form.form_status = 'payment done (approved)'
+        form.save()
+        return Response({'message': 'Payment successful!'}, status=status.HTTP_200_OK)
+    return Response({'message': 'Invalid request method'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

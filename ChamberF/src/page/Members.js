@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./Navbar";
 import Avvvatars from "avvvatars-react";
 import rectImage from "../assets/rect.png";
+import { useBaseUrl } from "../context";
 
 const MembersPage = () => {
+  const { baseUrl } = useBaseUrl();
   const [members, setMembers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const accessToken = localStorage.getItem("token");
@@ -18,7 +20,7 @@ const MembersPage = () => {
 
       try {
         const response = await fetch(
-          "http://64.227.134.220:8002/api/members/",
+          `${baseUrl}api/members/`,
           {
             headers: {
               Authorization: `Token ${accessToken}`,

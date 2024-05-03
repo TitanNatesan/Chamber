@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'; 
 import Navbar from './Navbar';
 import { useNavigate } from 'react-router-dom';
-import BASE_URL from './Appconfig';
-
+import { useBaseUrl } from '../context';
 const MembershipPrices = {
   trader: {
     upTo5Crore: 2950,
@@ -18,6 +17,7 @@ const MembershipPrices = {
   journalSubscription: 295,
   chamberDayCelebrations: 550,
 };
+
 
 const PaymentPage = () => {
   const [selectedMembership, setSelectedMembership] = useState(null);
@@ -81,25 +81,12 @@ const PaymentPage = () => {
     total_amount: 0, // Initial value (to be calculated based on logic)
   });
 
+  const {baseUrl} = useBaseUrl();
 
-  const updateProperty = (propertyName, value) => {
-    setFormData(prevData => ({
-      ...prevData,
-      [propertyName]: value,
-    }));
-  };
-
-
-  const accessToken = localStorage.getItem('token');
-
-  console.log(accessToken);
-  console.log(formData);
-  console.log('AccessToken:', accessToken);
-
-  const handlePaymentSuccess = async () => {
+  const handlePayNow = async () => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/process-payment/`,
+        `${baseUrl}api/payment/`,
         formData,
         {
           headers: {
@@ -117,7 +104,24 @@ const PaymentPage = () => {
     } catch (error) {
       console.error('Payment failed:', error.message);
     }
+  }
+
+
+  const updateProperty = (propertyName, value) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [propertyName]: value,
+    }));
   };
+
+
+  const accessToken = localStorage.getItem('token');
+
+  console.log(accessToken);
+  console.log(formData);
+  console.log('AccessToken:', accessToken);
+
+
 
   return (
     <div>
@@ -275,7 +279,7 @@ const PaymentPage = () => {
                 </div>
               </div>
               <button
-                onClick={handlePaymentSuccess}
+                onClick={handlePayNow}
                 className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
               >
                 Pay Now

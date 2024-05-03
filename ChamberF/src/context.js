@@ -4,7 +4,7 @@ const BaseUrlContext = createContext();
 
 export const BaseUrlProvider = ({ children }) => {
   // Define your base URL here
-  const ip = "192.168.137.1";
+  const ip = "192.168.237.138";
   const baseUrl = `http://${ip}:8000/`;
 
   return (
